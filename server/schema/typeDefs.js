@@ -4,7 +4,7 @@ const typeDefs = `
         username: String!
         email: String!
         password: String!
-        savedBooks: [Books]
+        savedBooks: [Book]
     }
 
     type Book {
@@ -40,3 +40,5 @@ const typeDefs = `
         removeBook(bookId: String!): User 
     }
 `
+
+module.exports = typeDefs;
