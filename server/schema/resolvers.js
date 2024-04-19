@@ -17,7 +17,7 @@ const resolvers = {
 
     Mutation: {
         login: async (parent, { email, password }) => {
-            const user = await User.findOne({ $or: [{ email }, {username}] });
+            const user = await User.findOne({ email });
 
             if(!user){
                 console.log("No account found");
@@ -37,6 +37,7 @@ const resolvers = {
         },
 
         addUser: async (parent, { username, email, password }) => {
+            console.log(username, email, password)
             const user = await User.create({
                 username,
                 email,
@@ -53,13 +54,13 @@ const resolvers = {
             return { token, user };
         },
 
-        saveBook: async (parent, { bookToSave }, context) => {
+        saveBook: async (parent, { bookInput }, context) => {
             console.log(context.user);
             try{
                 if(context.user){
                     const savedBook = await User.findOneAndUpdate(
                         { _id: context.user._id},
-                        { $addToSet: { savedBooks: bookToSave }},
+                        { $addToSet: { savedBooks: bookInput }},
                         { new: true, runValidators: true }
                     );
                     return savedBook;
