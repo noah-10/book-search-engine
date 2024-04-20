@@ -30,7 +30,8 @@ const typeDefs = `
         description: String!
         bookId: ID!
         image: String
-        link: String!
+        link: String
+        title: String!
     }
 
     type Mutation {
