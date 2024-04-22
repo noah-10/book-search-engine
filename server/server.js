@@ -15,11 +15,6 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   introspection: true,
-  playground: {
-    settings: {
-      "schema.polling.enable": false,
-    }
-  }
 });
 
 const startApolloServer = async () => {

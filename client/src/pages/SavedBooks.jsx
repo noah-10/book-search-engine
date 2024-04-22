@@ -18,7 +18,10 @@ import { GET_ME } from '../utils/queries';
 
 const SavedBooks = () => {
 
+  // Added refetch so each time the component is called it refetches the query
   const { loading, data, refetch } = useQuery(GET_ME);
+
+  // Creates mutation hook and each time the mutation is called it refetches the query
   const [removeBook, { error }] = useMutation(REMOVE_BOOK, {
     refetchQueries: [
       GET_ME,
@@ -26,6 +29,7 @@ const SavedBooks = () => {
     ]
   });
 
+  // Calls the refetch each time the component is called
   useEffect(() => {
     refetch()
   }, []);
@@ -44,13 +48,13 @@ const SavedBooks = () => {
     )
   };
   
+  // Variable for the users saved books
   const userBooks = user.me.savedBooks;
     
-  // create function that accepts the book's mongo _id value as param and deletes the book from the database
+  // function for handling deleting a book
   const handleDeleteBook = async (bookId) => {
   
     try {
-      console.log(bookId);
       const { data } = await removeBook({
         variables: {
           bookId

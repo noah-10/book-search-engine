@@ -1,12 +1,10 @@
 import { useState } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
 
-// import { createUser } from '../utils/API';
 import Auth from '../utils/auth';
 
 import { useMutation } from '@apollo/client';
 import { ADD_USER } from '../utils/mutations';
-
 
 const SignupForm = () => {
   // set initial form state
@@ -26,7 +24,6 @@ const SignupForm = () => {
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-    console.log(event);
     // check if form has everything (as per react-bootstrap docs)
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -34,14 +31,11 @@ const SignupForm = () => {
       event.stopPropagation();
     }
 
-    console.log(form);
-
     try {
+      //call mutation hook to create a new user
       const { data } = await saveUser({
         variables: { ...userFormData }
       });
-
-      console.log("login data", data);
 
       Auth.login(data.addUser.token);
     } catch (err) {
