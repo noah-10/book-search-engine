@@ -14,7 +14,12 @@ const PORT = process.env.PORT || 3001;
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  introspection: true
+  introspection: true,
+  playground: {
+    settings: {
+      "schema.polling.enable": false,
+    }
+  }
 });
 
 const startApolloServer = async () => {

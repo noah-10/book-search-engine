@@ -6,7 +6,6 @@ const { signToken } = require('../utils/auth');
 const resolvers = {
     Query: {
         me: async (parent, args, context) => {
-            console.log("context", context)
             if(context.user){
                 return User.findOne({ _id: context.user._id}).populate('savedBooks');
             }else{
@@ -18,8 +17,6 @@ const resolvers = {
 
     Mutation: {
         login: async (parent, { email, password }) => {
-            console.log('email', email);
-            console.log('password', password);
             const user = await User.findOne({ email });
 
             if(!user){
@@ -57,7 +54,6 @@ const resolvers = {
         },
 
         saveBook: async (parent, {input}, context) => {
-            console.log("bookInput", input);
             try{
                 if(context.user){
                     const savedBook = await User.findOneAndUpdate(
@@ -73,18 +69,23 @@ const resolvers = {
             }
         },
 
-        removeBook: async (parent, { book }, context) => {
-            const updatedUser = await User.findOneAndDelete(
-                { _id: context.user._id },
-                { $pull: { savedBooks: { bookId: book }}},
-                { new: true }
-            );
+        removeBook: async (parent, { bookId }, context) => {
+            try{
+                const updatedUser = await User.findOneAndUpdate(
+                    { _id: context.user._id },
+                    { $pull: { savedBooks: { bookId: bookId }}},
+                    { new: true }
+                );
 
-            if(!updatedUser){
-                return console.log('Error no user')
-            };
+                if(!updatedUser){
+                    console.log('Error no user');
+                    return;
+                };
 
-            return updatedUser;
+                return updatedUser;
+            }catch(err){
+                console.error(err);
+            }
         }
     }
 }
