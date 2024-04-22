@@ -18,7 +18,7 @@ import { GET_ME } from '../utils/queries';
 
 const SavedBooks = () => {
 
-  const { loading, data } = useQuery(GET_ME);
+  const { loading, data, refetch } = useQuery(GET_ME);
   const [removeBook, { error }] = useMutation(REMOVE_BOOK, {
     refetchQueries: [
       GET_ME,
@@ -26,7 +26,10 @@ const SavedBooks = () => {
     ]
   });
 
-  console.log(data);
+  useEffect(() => {
+    refetch()
+  }, []);
+
   const user = data || [];
 
   if(loading){
